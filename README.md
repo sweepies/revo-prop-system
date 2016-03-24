@@ -13,4 +13,4 @@ Simply download the zip or clone this repository into your addons folder.
 
 * Make it so people can't get stuck - Don't unfade if there is a player inside of it.
 
-Pull requests and feature requests are apprecieated.
+Pull requests and feature requests are apprecieated!
