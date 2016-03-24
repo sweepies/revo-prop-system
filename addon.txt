@@ -1,11 +1,11 @@
 "AddonInfo"
 {
-	"name"				"Anti Propminge"
-	"version"			"0.1"
+	"name"				"Sweepy's Prop System"
+	"version"			"1.0"
 	"up_date"			""
 	"author_name"			"Sweepyoface"
-	"author_email"			"sweepyoface@gmail.com"
-	"author_url"			""
+	"author_email"			"github.lol@meandmyid.com"
+	"author_url"			"https://sweepy.pw/"
 	"info"				"The most simple and effective anti prop kill, push, and surf script."
 	"override"			"0"
 }
