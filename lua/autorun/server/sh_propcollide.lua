@@ -1,5 +1,7 @@
 PropMingeConfig = {} -- DO NOT EDIT
 
+------- BEGIN CONFIG -------
+
 PropMingeConfig.IgnoreGroups = { -- Groups listed here will be exempt from the anti propminge
 	"group1",
 	"group2"
@@ -24,6 +26,8 @@ PropMingeConfig.StopPropDamage = true						-- Stop props from hurting people?
 PropMingeConfig.StopVehicleDamage = true					-- Stop vehicles from hurting people?
 PropMingeConfig.NocollidedTime = 2							-- Time that the entity stays nocollided after dropping with physgun
 PropMingeConfig.AlphaFade = 200								-- The alpha the prop is set to while being physgunned (max 255)
+
+------- END OF CONFIG -------
 
 function AutoNoCollide( ply, ent )
 	if (PropMingeConfig.EnableAutoNocollide) then
