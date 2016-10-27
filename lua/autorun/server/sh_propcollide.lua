@@ -23,7 +23,7 @@ PropMingeConfig.EnableAutoNocollide = true					-- Enable the automatic nocollide
 PropMingeConfig.EnableAutoNocollideConstraints = true 		-- Enable the automatic nocollide for all constrained props while physgunning a prop?
 PropMingeConfig.EnableTransparency = true					-- Slightly fade props when they're being nocollided?
 PropMingeConfig.StopPropDamage = true						-- Stop props from hurting people?
-PropMingeConfig.StopVehicleDamage = false					-- Stop vehicles from hurting people?
+PropMingeConfig.StopVehicleDamage = true					-- Stop vehicles from hurting people?
 PropMingeConfig.NocollidedTime = 2							-- Time that the entity stays nocollided after dropping with physgun
 PropMingeConfig.AlphaFade = 200								-- The alpha the prop is set to while being physgunned (max 255)
 
@@ -31,23 +31,21 @@ PropMingeConfig.AlphaFade = 200								-- The alpha the prop is set to while bei
 
 function AutoNoCollide( ply, ent )
 	if (PropMingeConfig.EnableAutoNocollide) then
-		if (ent:CPPIGetOwner() == ply) or (table.HasValue(ent:CPPIGetOwner():CPPIGetFriends(), ply)) then
-			if (PropMingeConfig.IgnoreSteamIDs) and (!table.HasValue(PropMingeConfig.IgnoreSteamIDs, ply:SteamID())) and (PropMingeConfig.IgnoreGroups) and (!table.HasValue(PropMingeConfig.IgnoreGroups, ply:GetUserGroup())) then
-				if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
-					ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
-					local col = ent:GetColor()
-					if (PropMingeConfig.EnableTransparency) then
-						ent:SetColor( Color( col.r, col.g, col.b, (PropMingeConfig.AlphaFade) ) )
-						ent:SetRenderMode(RENDERMODE_TRANSALPHA)
-					end
-					if (PropMingeConfig.EnableAutoNocollideConstraints) then
-						for _, ent in pairs( constraint.GetAllConstrainedEntities( ent ) ) do
-							ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
-							local col = ent:GetColor()
-							if (PropMingeConfig.EnableTransparency) then
-								ent:SetColor( Color( col.r, col.g, col.b, (PropMingeConfig.AlphaFade) ) )
-								ent:SetRenderMode(RENDERMODE_TRANSALPHA)
-							end
+		if (PropMingeConfig.IgnoreSteamIDs) and (!table.HasValue(PropMingeConfig.IgnoreSteamIDs, ply:SteamID())) and (PropMingeConfig.IgnoreGroups) and (!table.HasValue(PropMingeConfig.IgnoreGroups, ply:GetUserGroup())) then
+			if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
+				ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
+				local col = ent:GetColor()
+				if (PropMingeConfig.EnableTransparency) then
+					ent:SetColor( Color( col.r, col.g, col.b, (PropMingeConfig.AlphaFade) ) )
+					ent:SetRenderMode(RENDERMODE_TRANSALPHA)
+				end
+				if (PropMingeConfig.EnableAutoNocollideConstraints) then
+					for _, ent in pairs( constraint.GetAllConstrainedEntities( ent ) ) do
+						ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
+						local col = ent:GetColor()
+						if (PropMingeConfig.EnableTransparency) then
+							ent:SetColor( Color( col.r, col.g, col.b, (PropMingeConfig.AlphaFade) ) )
+							ent:SetRenderMode(RENDERMODE_TRANSALPHA)
 						end
 					end
 				end
@@ -61,23 +59,21 @@ function AutoUnNoCollide( ply, ent )
 	local phys = ent:GetPhysicsObject()
 	if (PropMingeConfig.EnableAutoNocollide) then
 		if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
-			if (ent:CPPIGetOwner() == ply) or (table.HasValue(ent:CPPIGetOwner():CPPIGetFriends(), ply)) then
-				if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
-					timer.Simple(0.5, function()
-						phys:SetVelocity( Vector (0, 0, 0) )
+			if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
+				timer.Simple(0.5, function()
+					phys:SetVelocity( Vector (0, 0, 0) )
+					ent:SetCollisionGroup(COLLISION_GROUP_NONE)
+					ent:SetRenderMode(RENDERMODE_NORMAL)
+					local col = ent:GetColor()
+					ent:SetColor( Color( col.r, col.g, col.b, 255) )
+					for _, ent in pairs( constraint.GetAllConstrainedEntities( ent ) ) do
 						ent:SetCollisionGroup(COLLISION_GROUP_NONE)
 						ent:SetRenderMode(RENDERMODE_NORMAL)
+						phys:SetVelocity( Vector( 0, 0, 0 ) )
 						local col = ent:GetColor()
 						ent:SetColor( Color( col.r, col.g, col.b, 255) )
-						for _, ent in pairs( constraint.GetAllConstrainedEntities( ent ) ) do
-							ent:SetCollisionGroup(COLLISION_GROUP_NONE)
-							ent:SetRenderMode(RENDERMODE_NORMAL)
-							phys:SetVelocity( Vector( 0, 0, 0 ) )
-							local col = ent:GetColor()
-							ent:SetColor( Color( col.r, col.g, col.b, 255) )
-						end
-					end)
-				end
+					end
+				end)
 			end
 		end
 	end
