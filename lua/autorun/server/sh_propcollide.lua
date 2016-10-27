@@ -87,21 +87,23 @@ function OnCollide( data, phys )
 end
 hook.Add( "PhysicsCollide", "On Collide", OnCollide )
 
-function AntiDmg( ent, dmginfo )
-		if (PropMingeConfig.StopPropDamage) then
-			if ent:IsPlayer() and dmginfo:GetDamageType() == DMG_CRUSH then
-				dmginfo:SetDamage(0)
-				dmginfo:ScaleDamage(0)
-				dmginfo:SetDamageForce(Vector(0,0,0))
-				return dmginfo,true
-			end
-		if (PropMingeConfig.StopVehicleDamage) then
-			if ent:IsPlayer() and dmginfo:GetDamageType() == DMG_VEHICLE then
-				dmginfo:SetDamage(0)
-				dmginfo:ScaleDamage(0)
-				dmginfo:SetDamageForce(Vector(0,0,0))
-			end	
+function AntiPropDmg( ent, dmginfo )
+	if (PropMingeConfig.StopPropDamage) then
+		if ent:IsPlayer() and dmginfo:GetDamageType() == DMG_CRUSH then
+			dmginfo:SetDamage(0)
+			dmginfo:ScaleDamage(0)
+			dmginfo:SetDamageForce(Vector(0,0,0))
+			return dmginfo,true
 		end
-	end 
+	end
 end
-hook.Add( "EntityTakeDamage", "AntiDmg", AntiDmg )
+hook.Add( "EntityTakeDamage", "AntiPropDmg", AntiPropDmg )
+
+function AntiVehicleDmg( victim, attacker )
+	if (PropMingeConfig.StopVehicleDamage) then
+    	if (attacker:IsVehicle() or attacker:GetClass() == "prop_vehicle_jeep") then
+        	return false
+    	end
+    end
+end
+hook.Add("PlayerShouldTakeDamage", "AntiVehicleDmg", AntiVehicleDmg)
