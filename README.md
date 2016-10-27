@@ -11,6 +11,6 @@ Simply download the zip or clone this repository into your addons folder.
 
 **To do:**
 
-~~* Make it so people can't get stuck - Don't unfade if there is a player inside of it.
+* ~~Make it so people can't get stuck - Don't unfade if there is a player inside of it.
 
 Requests and issues are appreciated!
