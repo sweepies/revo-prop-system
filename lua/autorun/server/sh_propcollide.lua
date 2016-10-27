@@ -19,13 +19,13 @@ PropMingeConfig.NoCollideEntities = { -- The entities you want the effect to be 
 	"gmod_button"
 }
 
-PropMingeConfig.EnableAutoNocollide = true					-- Enable the automatic nocollide when physgunning a prop?
+PropMingeConfig.EnableAutoNocollide = true			-- Enable the automatic nocollide when physgunning a prop?
 PropMingeConfig.EnableAutoNocollideConstraints = true 		-- Enable the automatic nocollide for all constrained props while physgunning a prop?
-PropMingeConfig.EnableTransparency = true					-- Slightly fade props when they're being nocollided?
-PropMingeConfig.StopPropDamage = true						-- Stop props from hurting people?
-PropMingeConfig.StopVehicleDamage = true					-- Stop vehicles from hurting people?
-PropMingeConfig.NocollidedTime = 2							-- Time that the entity stays nocollided after dropping with physgun
-PropMingeConfig.AlphaFade = 200								-- The alpha the prop is set to while being physgunned (max 255)
+PropMingeConfig.EnableTransparency = true			-- Slightly fade props when they're being nocollided?
+PropMingeConfig.StopPropDamage = true				-- Stop props from hurting people?
+PropMingeConfig.StopVehicleDamage = true			-- Stop vehicles from hurting people?
+PropMingeConfig.NocollidedTime = 2				-- Time that the entity stays nocollided after dropping with physgun
+PropMingeConfig.AlphaFade = 200					-- The alpha the prop is set to while being physgunned (max 255)
 
 ------- END OF CONFIG -------
 
