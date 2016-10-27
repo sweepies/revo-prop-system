@@ -51,6 +51,9 @@ function AutoNoCollide( ply, ent )
 		if (ent:CPPIGetOwner() == ply) or (table.HasValue(ent:CPPIGetOwner():CPPIGetFriends(), ply)) then
 			if (PropMingeConfig.IgnoreSteamIDs) and (!table.HasValue(PropMingeConfig.IgnoreSteamIDs, ply:SteamID())) and (PropMingeConfig.IgnoreGroups) and (!table.HasValue(PropMingeConfig.IgnoreGroups, ply:GetUserGroup())) then
 				if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
+					if (timer.Exists("Unghost")) then 
+						timer.Remove("Unghost")
+					end
 					ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
 					local col = ent:GetColor()
 					if (PropMingeConfig.EnableTransparency) then
@@ -81,7 +84,7 @@ function AutoUnNoCollide( ply, ent )
 			if (ent:CPPIGetOwner() == ply) or (table.HasValue(ent:CPPIGetOwner():CPPIGetFriends(), ply)) then
 				if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
 					if not (IsPlayerInside(ent)) then
-						timer.Simple(0.5, function()
+						timer.Create("Unghost", 0.5, 0, function()
 							phys:SetVelocity( Vector (0, 0, 0) )
 							ent:SetCollisionGroup(COLLISION_GROUP_NONE)
 							ent:SetRenderMode(RENDERMODE_NORMAL)
