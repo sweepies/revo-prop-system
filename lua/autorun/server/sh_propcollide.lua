@@ -82,23 +82,21 @@ function AutoUnNoCollide( ply, ent )
 	if (PropMingeConfig.EnableAutoNocollide) then
 		if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
 			if (ent:CPPICanPhysgun(ply)) then
-				if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
-					if not (IsPlayerInside(ent)) then
-						timer.Create("Unghost", 0.5, 0, function()
-							phys:SetVelocity( Vector (0, 0, 0) )
+				if not (IsPlayerInside(ent)) then
+					timer.Create("Unghost", 0.5, 0, function()
+						phys:SetVelocity( Vector (0, 0, 0) )
+						ent:SetCollisionGroup(COLLISION_GROUP_NONE)
+						ent:SetRenderMode(RENDERMODE_NORMAL)
+						local col = ent:GetColor()
+						ent:SetColor( Color( col.r, col.g, col.b, 255) )
+						for _, ent in pairs( constraint.GetAllConstrainedEntities( ent ) ) do
 							ent:SetCollisionGroup(COLLISION_GROUP_NONE)
 							ent:SetRenderMode(RENDERMODE_NORMAL)
 							local col = ent:GetColor()
 							ent:SetColor( Color( col.r, col.g, col.b, 255) )
-							for _, ent in pairs( constraint.GetAllConstrainedEntities( ent ) ) do
-								ent:SetCollisionGroup(COLLISION_GROUP_NONE)
-								ent:SetRenderMode(RENDERMODE_NORMAL)
-								local col = ent:GetColor()
-								ent:SetColor( Color( col.r, col.g, col.b, 255) )
-							end
-						end)
-						phys:SetVelocity( Vector( 0, 0, 0 ) )
-					end
+						end
+					end)
+					phys:SetVelocity( Vector( 0, 0, 0 ) )
 				end
 			end
 		end
