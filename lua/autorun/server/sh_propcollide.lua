@@ -48,7 +48,7 @@ end
 
 function AutoNoCollide( ply, ent )
 	if (PropMingeConfig.EnableAutoNocollide) then
-		if (ent:CPPIGetOwner() == ply) or (table.HasValue(ent:CPPIGetOwner():CPPIGetFriends(), ply)) or (ent:CPPICanPhysgun(ply)) then
+		if (ent:CPPICanPhysgun(ply)) then
 			if (PropMingeConfig.IgnoreSteamIDs) and (!table.HasValue(PropMingeConfig.IgnoreSteamIDs, ply:SteamID())) and (PropMingeConfig.IgnoreGroups) and (!table.HasValue(PropMingeConfig.IgnoreGroups, ply:GetUserGroup())) then
 				if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
 					if (timer.Exists("Unghost")) then 
@@ -81,7 +81,7 @@ function AutoUnNoCollide( ply, ent )
 	local phys = ent:GetPhysicsObject()
 	if (PropMingeConfig.EnableAutoNocollide) then
 		if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
-			if (ent:CPPIGetOwner() == ply) or (table.HasValue(ent:CPPIGetOwner():CPPIGetFriends(), ply)) then
+			if (ent:CPPICanPhysgun(ply)) then
 				if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
 					if not (IsPlayerInside(ent)) then
 						timer.Create("Unghost", 0.5, 0, function()
