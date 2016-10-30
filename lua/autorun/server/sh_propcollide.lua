@@ -33,7 +33,7 @@ function IsPlayerInside(ent)
 	local check = false
 	local center = ent:LocalToWorld(ent:OBBCenter())
 	for _,v in next, ents.FindInSphere(center, ent:BoundingRadius()) do
-		if v:IsPlayer() then
+		if v:IsPlayer() or v:IsVehicle() then
 			local pos = v:GetPos()
 			local trace = { start = pos, endpos = pos, filter = v }
 			local tr = util.TraceEntity( trace, v )
