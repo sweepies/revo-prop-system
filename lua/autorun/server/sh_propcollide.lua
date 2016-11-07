@@ -84,7 +84,6 @@ function AutoUnNoCollide( ply, ent )
 			if (ent:CPPICanPhysgun(ply)) then
 				if not (IsPlayerInside(ent)) then
 					timer.Create("Unghost", 0.5, 0, function()
-						phys:SetVelocity( Vector (0, 0, 0) )
 						ent:SetCollisionGroup(COLLISION_GROUP_NONE)
 						ent:SetRenderMode(RENDERMODE_NORMAL)
 						local col = ent:GetColor()
