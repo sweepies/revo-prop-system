@@ -69,6 +69,11 @@ function AutoNoCollide( ply, ent )
 end
 hook.Add( "PhysgunPickup", "Auto Nocollide", AutoNoCollide )
 
+function ResetVelocity( ply, ent )
+	ent:SetVelocity(Vector(0, 0, 0))
+end
+hook.Add( "PhysgunDrop", "Reset Velocity", ResetVelocity )
+
 function OnFreeze(weapon, phys, ent, ply)
 	if (PropMingeConfig.EnableAutoNocollide) then
 		if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
@@ -88,7 +93,6 @@ function OnFreeze(weapon, phys, ent, ply)
 							end
 						end
 				--	end)
-					phys:SetVelocity( Vector( 0, 0, 0 ) )
 				end
 			end
 		end
