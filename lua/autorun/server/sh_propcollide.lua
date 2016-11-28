@@ -125,3 +125,15 @@ hook.Add("PlayerSpawnedProp", "FadeOnSpawn", function(ply, model, ent)
 		ent:SetRenderMode(RENDERMODE_TRANSALPHA)
 	end
 end)
+
+hook.Add("OnPhysgunReload", "FadeOnUnfreeze", function(physgun, ply)
+	local ent = ply:GetEyeTrace().Entity
+	local col = ent:GetColor()
+	if (ent:CPPICanPhysgun(ply)) then
+		ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
+		if (PropMingeConfig.EnableTransparency) then
+			ent:SetColor( Color( col.r, col.g, col.b, (PropMingeConfig.AlphaFade) ) )
+			ent:SetRenderMode(RENDERMODE_TRANSALPHA)
+		end
+	end
+end)
