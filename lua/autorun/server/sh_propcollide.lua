@@ -23,8 +23,7 @@ PropMingeConfig.EnableAutoNocollide = true			-- Enable the automatic nocollide w
 PropMingeConfig.EnableAutoNocollideConstraints = true 		-- Enable the automatic nocollide for all constrained props while physgunning a prop?
 PropMingeConfig.EnableTransparency = true			-- Slightly fade props when they're being nocollided?
 PropMingeConfig.StopPropDamage = true				-- Stop props from hurting people?
-PropMingeConfig.StopVehicleDamage = false			-- Stop vehicles from hurting people?
-PropMingeConfig.NocollidedTime = 2				-- Time that the entity stays nocollided after dropping with physgun
+PropMingeConfig.StopVehicleDamage = true			-- Stop vehicles from hurting people?
 PropMingeConfig.AlphaFade = 200					-- The alpha the prop is set to while being physgunned (max 255)
 
 ------- END OF CONFIG -------
@@ -70,42 +69,32 @@ function AutoNoCollide( ply, ent )
 end
 hook.Add( "PhysgunPickup", "Auto Nocollide", AutoNoCollide )
 
-function AutoUnNoCollide( ply, ent )
-	local phys = ent:GetPhysicsObject()
+function OnFreeze(weapon, phys, ent, ply)
 	if (PropMingeConfig.EnableAutoNocollide) then
 		if (table.HasValue(PropMingeConfig.NoCollideEntities, ent:GetClass())) then
 			if (ent:CPPICanPhysgun(ply)) then
 				if not (IsPlayerInside(ent)) then
-					timer.Create("Unghost", 0.5, 0, function()
-						ent:SetCollisionGroup(COLLISION_GROUP_NONE)
-						ent:SetRenderMode(RENDERMODE_NORMAL)
-						local col = ent:GetColor()
-						ent:SetColor( Color( col.r, col.g, col.b, 255) )
-						for _, ent in pairs( constraint.GetAllConstrainedEntities( ent ) ) do
+				--	timer.Create("Unghost", 0.5, 0, function()
+						if (IsValid(ent)) then
 							ent:SetCollisionGroup(COLLISION_GROUP_NONE)
 							ent:SetRenderMode(RENDERMODE_NORMAL)
 							local col = ent:GetColor()
 							ent:SetColor( Color( col.r, col.g, col.b, 255) )
+							for _, ent in pairs( constraint.GetAllConstrainedEntities( ent ) ) do
+								ent:SetCollisionGroup(COLLISION_GROUP_NONE)
+								ent:SetRenderMode(RENDERMODE_NORMAL)
+								local col = ent:GetColor()
+								ent:SetColor( Color( col.r, col.g, col.b, 255) )
+							end
 						end
-					end)
+				--	end)
 					phys:SetVelocity( Vector( 0, 0, 0 ) )
 				end
 			end
 		end
 	end
 end
-hook.Add( "PhysgunDrop", "Auto UnNocollide", AutoUnNoCollide )
-
-function OnCollide( data, phys )
-	phys:SetCollisionGroup(COLLISION_GROUP_WORLD)
-	phys:SetVelocity(Vector(0,0,0))
-	local col = phys:GetColor()
-	if (PropMingeConfig.EnableTransparency) then
-		phys:SetColor( Color( col.r, col.g, col.b, (PropMingeConfig.AlphaFade) ) )
-		phys:SetRenderMode(RENDERMODE_TRANSALPHA)
-	end
-end
-hook.Add( "PhysicsCollide", "On Collide", OnCollide )
+hook.Add( "OnPhysgunFreeze", "On Freeze", OnFreeze )
 
 function AntiPropDmg( ent, dmginfo )
 	if (PropMingeConfig.StopPropDamage) then
@@ -127,3 +116,12 @@ function AntiVehicleDmg( victim, attacker )
     end
 end
 hook.Add("PlayerShouldTakeDamage", "AntiVehicleDmg", AntiVehicleDmg)
+
+hook.Add("PlayerSpawnedProp", "FadeOnSpawn", function(ply, model, ent)
+	ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
+	local col = ent:GetColor()
+	if (PropMingeConfig.EnableTransparency) then
+		ent:SetColor( Color( col.r, col.g, col.b, (PropMingeConfig.AlphaFade) ) )
+		ent:SetRenderMode(RENDERMODE_TRANSALPHA)
+	end
+end)
