@@ -24,7 +24,7 @@ PropMingeConfig.EnableAutoNocollideConstraints = true -- Enable the automatic no
 PropMingeConfig.EnableTransparency = true -- Slightly fade props when they're being nocollided?
 PropMingeConfig.AlphaFade = 200 -- The alpha the prop is set to while being physgunned (max 255)
 PropMingeConfig.DisableThrowing = true -- Set velocity to 0 upon dropping a prop
-PropMingeCOnfig.DisableDamage = true -- Disable damage caused by props
+PropMingeConfig.DisableDamage = true -- Disable damage caused by props
 
 ------- END OF CONFIG -------
 
